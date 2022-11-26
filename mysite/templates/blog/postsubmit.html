@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+<title>Submit a Post</title>
+{% endblock  %}
+
+{% block content %}
+<div class = "row justify-content-md-center">
+<form method = "post" action = "" class = "col-md-6" enctype = "multipart/form-data">
+    {% csrf_token %}
+    {{ postform|crispy }}
+    {{ contentbar|safe }}
+    {{ imageformset.management_form }}
+    {% for form in imageformset %}
+    {{ form|crispy }}
+    {% endfor %}
+
+    <input type = "submit" value = "submit" >
+</form>
+</div>
+{% endblock  %}
