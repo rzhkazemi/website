@@ -12,26 +12,29 @@ from django.urls import reverse
 
 def Login_View(request):
 
-    if request.method == "POST":
+    if not request.user.is_authenticated:
 
-        form = AuthenticationForm(request=request, data=request.POST)
+        if request.method == "POST":
 
-        if form.is_valid():
+            form = AuthenticationForm(request=request, data=request.POST)
 
-            username = form.cleaned_data["username"]
+            if form.is_valid():
 
-            password = form.cleaned_data["password"]
+                username = form.cleaned_data["username"]
 
-            user = authenticate(username=username,
-                                password=password)
+                password = form.cleaned_data["password"]
 
-            if user is not None:
+                user = authenticate(username=username,
+                                    password=password)
 
-                login(request, user)
+                if user is not None:
 
-                return redirect('/')
-    form = AuthenticationForm()
-    return render(request, 'accounts/login.html')
+                    login(request, user)
+
+                    return redirect('/')
+        form = AuthenticationForm()
+        return render(request, 'accounts/login.html')
+    return redirect('/')
 
 
 @login_required

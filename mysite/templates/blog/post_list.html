@@ -26,12 +26,11 @@
           <div class="col-lg-8 entries">
 
             {% for post in posts %}
-
             <article class="entry">
               <div class="entry-img">
-                {% for img in post.images.all %}
-                <img src="{{MEDIA_URL}}{{img.post_image_name}}" alt="" class="img-fluid">
-                {% endfor %}
+                {% for image in post.images.all|slice:":1" %}
+                <img src="{{ MEDIA_URL }}{{ image.post_image_name }}" alt="" class="img-fluid">
+              {% endfor %}
               </div>
 
               <h2 class="entry-title">

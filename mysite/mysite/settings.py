@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'django.contrib.staticfiles',
-    'debug_toolbar',
     'blog.apps.BlogConfig',
     'accounts.apps.AccountsConfig',
     'main.apps.MainConfig',
@@ -57,6 +56,7 @@ INSTALLED_APPS = [
     'robots',
     'taggit',
     'captcha',
+    'debug_toolbar',
 ]
 
 # captcha admin settings

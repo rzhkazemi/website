@@ -35,3 +35,8 @@ def postcategories():
 def function(pk):
 
     return Comment.objects.filter(post=pk, approved=True).count()
+
+
+@register.simple_tag(name="firstimage")
+def function():
+    posts = Post.objects.filter(status=True)

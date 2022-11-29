@@ -5,7 +5,6 @@
     <!-- ======= Breadcrumbs ======= -->
     <section id="breadcrumbs" class="breadcrumbs">
       <div class="container">
-
         <ol>
           <li><a href="{% url 'main:index' %}">Home</a></li>
           <li><a href="{% url 'blog:blog-index' %}">Blog</a></li>
@@ -39,7 +38,7 @@
                   {% for cat in post.category.all %}
                   <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{% url 'blog:category' category_name=cat %}">{{ cat.name }}</a></li>
                   {% endfor %}
-                  <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{% url 'blog:author' author_username=post.author.username %}">{{ post.author.username}}</a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{% url 'blog:author' author_username=post.author.username %}">{{ post.author.username }}</a></li>
                   <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="#">{{ post.tags.all|join:"," }}</a></li>
                   {% comment %} <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{% url 'blog:author' author_username=post.author.username %}">{{ object.author.get_full_name }}</a></li> {% endcomment %}
                   <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">{{ post.publish_date|naturaltime }}</time></a></li>
@@ -240,8 +239,16 @@
                       <textarea name="comment" class="form-control" placeholder="Your Comment*"></textarea>
                     </div>
                   </div> {% endcomment %}
-                  
-                  {{commentform.as_p}}
+                  {% if request.user.is_authenticated %}
+                  <div class="col-md-6 form-group">
+                    <input name="name" type="hidden" class="form-control" value = {{ request.user.username }}>
+                  </div>
+                  <ul>Email: {{ commentform.email }}</ul>
+                  <ul>Comment: {{ commentform.comment }}</ul>
+                  <ul>Captcha: {{ commentform.captcha }}</ul>
+                  {% else %}
+                  {{ commentform.as_p }}
+                  {% endif %}
                   <button type="submit" class="btn btn-primary">Post Comment</button>
                 </form>
               </div>

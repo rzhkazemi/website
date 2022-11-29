@@ -30,12 +30,38 @@ class IndexView(View):
 
             contactform.save()
 
-            return render(request, self.template_name, {"contactform": contactform})
+            messages.success(request, "پیام شما با موفقیت ثبت شد", "SUCCESS")
+
+            return redirect('/')
 
         if newsform.is_valid():
 
             newsform.save()
 
-            return render(request, self.template_name, {"newsform": newsform})
+            messages.success(request, "ایمیل شما با موفقیت ثبت شد", "SUCCESS")
+
+            return render(request, self.template_name)
 
         return render(request, self.template_name, {"newsform": newsform, "contactform": contactform})
+
+
+class ContactView(View):
+
+    def get(self, request, *args, **kwargs):
+
+        contactform = CaptchaContactForm()
+
+        return render(request, "contact.html", {"contactform": contactform})
+
+    def post(self, request, *args, **kwargs):
+
+        contactform = CaptchaContactForm(request.POST)
+
+        if contactform.is_valid():
+
+            contactform.save()
+
+            messages.success(request, "پیام شما با موفقیت ثبت شد", "SUCCESS")
+
+            return redirect('/')
+        return render(request, "contact.html", {"contactform": contactform})

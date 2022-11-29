@@ -20,6 +20,9 @@ from django.conf import settings
 from django.contrib.sitemaps.views import sitemap
 from sitemaps import PostSitemap, StaticViewSitemap
 from main import views
+from django.views.generic import TemplateView
+
+from main.views import ContactView
 
 import debug_toolbar
 
@@ -29,6 +32,8 @@ sitemaps = {"postsitemaps": PostSitemap,
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("main.urls", namespace="main")),
+    path("about/", TemplateView.as_view(template_name="about.html"), name="about"),
+    path("contact/", ContactView.as_view(), name="contact"),
     path("blog/", include("blog.urls", namespace="blog")),
     path("accounts/", include("accounts.urls", namespace="accounts")),
     path("summernote/", include("django_summernote.urls")),

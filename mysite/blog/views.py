@@ -19,6 +19,8 @@ from django.views.generic.detail import DetailView
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from taggit.models import Tag
+
+from django.urls import reverse
 # Create your views here.
 
 
@@ -101,6 +103,14 @@ class PostDetail(View):
 
         commentform = CaptchaCommentForm(request.POST)
 
+        context = {
+            "post": post,
+
+            "commentform": commentform,
+
+            "comments": comments
+        }
+
         if commentform.is_valid():
 
             new_comment = commentform.save(commit=False)
@@ -109,13 +119,9 @@ class PostDetail(View):
 
             new_comment.save()
 
-            context = {
-                "post": post,
+            messages.success(request, "نظر شما با موفقیت ثبت شد")
 
-                "commentform": commentform,
-
-                "comments": comments
-            }
+            return redirect(request.META.get('HTTP_REFERER'))
 
         return render(request, "blog/post_detail.html", context)
 
@@ -161,11 +167,28 @@ class PostSubmitView(View):
 
 def PostSearch(request):
 
+    posts = Post.objects.filter(status=True)
+
     if request.method == "GET":
 
         if s := request.GET.get("s"):
 
-            results = Post.objects.filter(
-                status=True).filter(content__contains=s)
+            res = posts.filter(content__icontains=s)
 
-    return render(request, "blog/search_result.html", {"results": results})
+            res = Paginator(res, 3)
+
+            try:
+
+                page_number = request.GET.get("page")
+
+                res = res.get_page(page_number)
+
+            except PageNotAnInteger:
+
+                res = res.get_page(1)
+
+            except EmptyPage:
+
+                res = res.get_page(1)
+
+            return render(request, "blog/search_result.html", {"res": res})

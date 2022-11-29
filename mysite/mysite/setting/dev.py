@@ -23,9 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-k$(evekuus=ja(5rlxw0agh$dj4o!rskktx%vufku0mwmx*_ia"
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
+
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 # sites framework
 
@@ -34,15 +37,27 @@ SITE_ID = 1
 
 # Application definition
 
-# INSTALLED_APPS = [
-# "django.contrib.admin",
-# "django.contrib.auth",
-# "django.contrib.contenttypes",
-# "django.contrib.sessions",
-# "django.contrib.messages",
-# "django.contrib.staticfiles",
-# "blog.apps.BlogConfig",
-# ]
+INSTALLED_APPS = [
+    'multi_captcha_admin',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+    'django.contrib.staticfiles',
+    'blog.apps.BlogConfig',
+    'accounts.apps.AccountsConfig',
+    'main.apps.MainConfig',
+    'django_summernote',
+    'crispy_forms',
+    'django.contrib.humanize',
+    'django_extensions',
+    'robots',
+    'taggit',
+    'captcha',
+    'debug_toolbar', ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -115,3 +130,6 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+X_FRAME_OPTIONS = "SAMEORIGIN"

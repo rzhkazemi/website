@@ -1,5 +1,6 @@
+{% extends 'base.html' %}
 {% load static %}
-<link href="{% static 'css/style.css' %}" rel="stylesheet">
+{% block content %}
 <div class="container">
 	<div class="screen">
 		<div class="screen__content">
@@ -34,5 +35,6 @@
 			<span class="screen__background__shape screen__background__shape1"></span>
 		</div>		
 	</div>
-</div>
+</div> 
+{% endblock  %}
 

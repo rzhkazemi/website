@@ -24,14 +24,14 @@
 
           <div class="col-lg-8 entries">
 
-            {% for result in results %}
+            {% for result in res %}
 
             <article class="entry">
-              {% comment %} <div class="entry-img">
-                {% for image in post.images.all %}
-                <img src="{{MEDIA_URL}}{{image.post_image_name}}" alt="" class="img-fluid">
+              <div class="entry-img">
+                {% for image in result.images.all|slice:":1" %}
+                <img src="{{MEDIA_URL}}{{ image.post_image_name }}" alt="" class="img-fluid">
                 {% endfor %}
-              </div> {% endcomment %}
+              </div>
 
               <h2 class="entry-title">
                 <a href="blog-single.html">{{ result.title }}</a>
@@ -40,20 +40,24 @@
               <div class="entry-meta">
                 <ul>
                     {% for cat in result.category.all %}
-                  <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{% url 'blog:category' category_name=cat %}">{{ cat }}</a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{% url 'blog:category' category_name=cat %}">{{ cat.name }}</a></li>
                   {% endfor %}
-                  <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{% url 'blog:author' author_username=post.author.username %}">{{ result.author }}</a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{% url 'blog:author' author_username=result.author.username %}">{{ result.author }}</a></li>
                   <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">{{ result.create_date }}</time></a></li>
                   <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">{{ result.count_view }}</a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">{{ result.comments|length }} Comments</a></li>
+                  {% for tg in result.tags.all %}
+                  <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="{% url 'blog:tag' tag_slug=tg.slug %}">{{ tg.slug }}</a></li>
+                  {% endfor %}
                 </ul>
               </div>
 
               <div class="entry-content">
                 <p>
-                  {{ post.content|safe|truncatechars:500 }}
+                  {{ result.content|safe|truncatechars:500 }}
                 </p>
                 <div class="read-more">
-                  <a href="{% url 'blog:detail' pk=post.id %}">Read More</a>
+                  <a href="{% url 'blog:detail' pk=result.id %}">Read More</a>
                 </div>
               </div>
 
@@ -153,9 +157,21 @@
 
             <div class="blog-pagination">
               <ul class="justify-content-center">
-                <li><a href="#">1</a></li>
-                <li class="active"><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
+                {% if res.has_previous %}
+                {% comment %} <li><a href="?page=1">first</a></li> {% endcomment %}
+                <li><a href="?page= {{res.previous_page_number}}">previous</a></li>
+                {% endif %}
+                {% for i in res.paginator.page_range %}
+                {% if posts.number == i %}
+                <li class="active"><a href="?page={{i}}">{{i}}</a></li>
+                {% else %}
+                <li><a href="?page={{i}}">{{i}}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if res.has_next %}
+                <li><a href="?page={{res.next_page_number}}">next</a></li>
+                {% comment %} <li><a href="?page= {{posts.paginator.num_pages}}">last</a></li> {% endcomment %}
+                {% endif %}
               </ul>
             </div>
 
@@ -167,7 +183,7 @@
 
               <h3 class="sidebar-title">Search</h3>
               <div class="sidebar-item search-form">
-                <form method="get" action="{% url 'blog:search' %}">
+                <form method="get" action="#">
                   <input type="text" name="s">
                   <button type="submit" ><i class="bi bi-search"></i></button>
                 </form>

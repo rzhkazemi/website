@@ -19,13 +19,13 @@ class CaptchaCommentForm(forms.ModelForm):
 
         widgets = {
 
-            "name": forms.TextInput(attrs={"class": "form-group", "placeholder": "Your Name"}),
+            "name": forms.TextInput(attrs={"class": "form-group", "placeholder": "Your Name", "label": "Name: "}),
 
-            "email": forms.TextInput(attrs={"class": "form-group", "placeholder": "Your Email"}),
+            "email": forms.TextInput(attrs={"class": "form-group", "placeholder": "Your Email", "label": "Email: "}),
 
-            "comment": forms.Textarea(attrs={"class": "form-group", "placeholder": "Your Comment"}),
+            "comment": forms.Textarea(attrs={"class": "form-group", "placeholder": "Your Comment", "label": " Comment: "}),
 
-            "captcha": forms.TextInput(attrs={"class": "form-group", "placeholder": "Captcha"}),
+            "captcha": forms.TextInput(attrs={"class": "form-group", "placeholder": "Captcha", "label": "Captcha: "}),
 
         }
 
