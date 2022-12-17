@@ -10,7 +10,7 @@ register = template.Library()
 @register.inclusion_tag('blog/recent_posts.html')
 def recentposts(arg=4):
 
-    posts = Post.objects.filter(status=True).order_by('publish_date')[:arg]
+    posts = Post.objects.filter(status=True).order_by('-publish_date')[:arg]
 
     return {"posts": posts}
 

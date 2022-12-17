@@ -1,12 +1,24 @@
 from django.shortcuts import render, redirect
 
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from accounts.forms import signupform, LoginUserForm
 
 from django.contrib.auth import authenticate, login, logout
+
+from django.contrib.auth.models import User
+
 
 from django.contrib.auth.decorators import login_required
 
 from django.urls import reverse
+
+from django.contrib import messages
+
+from django.contrib.auth.views import PasswordResetView
+
+from django.contrib.messages.views import SuccessMessageMixin
+
+from django.urls import reverse_lazy
+
 # Create your views here.
 
 
@@ -16,13 +28,15 @@ def Login_View(request):
 
         if request.method == "POST":
 
-            form = AuthenticationForm(request=request, data=request.POST)
+            form = LoginUserForm(request.POST)
 
             if form.is_valid():
 
-                username = form.cleaned_data["username"]
+                cd = form.cleaned_data
 
-                password = form.cleaned_data["password"]
+                username = cd.get("email_or_username")
+
+                password = cd.get("password")
 
                 user = authenticate(username=username,
                                     password=password)
@@ -32,8 +46,12 @@ def Login_View(request):
                     login(request, user)
 
                     return redirect('/')
-        form = AuthenticationForm()
-        return render(request, 'accounts/login.html')
+                messages.error(request, "user not found", "error")
+
+        form = LoginUserForm()
+
+        return render(request, 'accounts/login.html', {"form": form})
+
     return redirect('/')
 
 
@@ -51,17 +69,40 @@ def Signup_View(request):
 
         if request.method == "POST":
 
-            form = UserCreationForm(request.POST)
+            form = signupform(request.POST)
 
             if form.is_valid():
 
-                form.save()
+                data = form.cleaned_data
 
-            return reverse('accounts:login')
+                User.objects.create_user(username=data['username'],
 
-        form = UserCreationForm()
+                                         email=data['email'],
 
-        return render(request, 'accounts/signup.html', {"form": form})
+                                         password=data['password1'])
 
-    else:
-        return redirect('/')
+                messages.success(request, 'successfully signed up', 'success')
+
+                return render(request, 'accounts/welcome.html')
+
+            messages.error(request, "failled to sign up", "error")
+
+            return render(request, "accounts/signup.html", {"form": form})
+
+        form = signupform()
+
+        return render(request, "accounts/signup.html", {"form": form})
+
+
+# class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+
+#     user = User.objects.filter()
+
+#     template_name = 'accounts/password_reset.html'
+#     email_template_name = 'accounts/password_reset_email.html'
+#     subject_template_name = 'accounts/password_reset_subject.txt'
+#     success_message = "We've emailed you instructions for setting your password, " \
+#                       "if an account exists with the email you entered. You should receive them shortly." \
+#                       " If you don't receive an email, " \
+#                       "please make sure you've entered the address you registered with, and check your spam folder."
+#     success_url = reverse_lazy('/')

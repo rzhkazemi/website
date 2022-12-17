@@ -62,6 +62,8 @@ class PostGallery(models.Model):
 
     post_image_name = models.ImageField(upload_to=upload_gallery_image,)
 
+    image_alt_name = models.CharField(max_length=200)
+
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name='images')
 

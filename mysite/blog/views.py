@@ -21,6 +21,10 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from taggit.models import Tag
 
 from django.urls import reverse
+
+from django.conf import settings
+
+from django.shortcuts import redirect
 # Create your views here.
 
 
@@ -30,7 +34,7 @@ class PostList(ListView):
 
     def get(self, request, **kwargs):
 
-        posts = Post.objects.filter(status=True)
+        posts = Post.objects.filter(status=True).order_by("-publish_date")
 
         tag = None
 
@@ -77,6 +81,12 @@ class PostDetail(View):
     def get(self, request, pk, *args, **kwargs):
 
         post = get_object_or_404(self.posts, pk=pk)
+
+        if post:
+
+            post.count_view += 1
+
+            post.save()
 
         comments = post.comments.filter(approved=True)
 

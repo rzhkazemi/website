@@ -1,0 +1,7 @@
+place this code in the root .htaccess of your site.
+# Canonical HTTPS/non-WWW
+<IfModule mod_rewrite.c>
+        RewriteCond %{HTTPS} off [OR]
+        RewriteCond %{HTTP_HOST} ^www\.razi.pythonanywhere\.com [NC]
+        RewriteRule (.*) https://razi.pythonanywhere.com/$1 [L,R=301]
+</IfModule>

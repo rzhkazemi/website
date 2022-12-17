@@ -24,7 +24,8 @@ from django.views.generic import TemplateView
 
 from main.views import ContactView
 
-import debug_toolbar
+from django.contrib.auth import views as auth_view
+
 
 sitemaps = {"postsitemaps": PostSitemap,
             "main": StaticViewSitemap}
@@ -42,6 +43,12 @@ urlpatterns = [
     path("sitemap.xml/", sitemap, {"sitemaps": sitemaps},
          name="django.contrib.sitemaps.views.postsitemaps"),
     path("robots.txt", include("robots.urls")),
-    path("__debug__", include("debug_toolbar.urls")),
     path("captcha/", include("captcha.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("accounts/password_rest/", auth_view.PasswordResetView.as_view(
+        template_name="accounts/password_reset.html"), name="password_reset"),
+    path("accounts/password_rest/done/", auth_view.PasswordResetDoneView.as_view(
+        template_name="accounts/password_reset_done.html"), name="password_reset_done"),
+    path("accounts/reset/<uidb64>/<token>/", auth_view.PasswordResetConfirmView.as_view(
+        template_name="accounts/password_reset_cnfrm.html"), name="password_reset_cnfrm"),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

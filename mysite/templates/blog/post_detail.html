@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% block title %}<title>{{post.title|truncatechars:20}}</title>{% endblock  %}
 {% load blog_tags %}
 {% load humanize %}
 {% block content %}
@@ -26,7 +27,7 @@
             <article class="entry entry-single">
               {% for image in post.images.all %}
               <div class="entry-img">
-                <img src="{{ MEDIA_URL }}{{ image.post_image_name }}" alt="" class="img-fluid">
+                <img src="{{ MEDIA_URL }}{{ image.post_image_name }}" alt="{{image.image_alt_name}}" class="img-fluid">
               </div>
               {% endfor %}
               <h2 class="entry-title">
@@ -251,6 +252,7 @@
                   {% endif %}
                   <button type="submit" class="btn btn-primary">Post Comment</button>
                 </form>
+                {% include "partials/messages.html" %}
               </div>
 
             </div><!-- End blog comments -->
