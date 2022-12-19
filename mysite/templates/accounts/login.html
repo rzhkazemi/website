@@ -1,40 +1,58 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block title %}<title>Login</title>{% endblock  %}
 {% block content %}
-<div class="container">
-	<div class="screen">
-		<div class="screen__content">
-			<form class="login" method = "post" action = "{% url 'accounts:login' %}">
-                {% csrf_token %}
-				<div class="login__field">
-					<i class="login__icon fas fa-user"></i>
-					<input type="text" name = "username" class="login__input" placeholder="User name">
-				</div>
-				<div class="login__field">
-					<i class="login__icon fas fa-lock"></i>
-					<input name = "password" type="password" class="login__input" placeholder="Password">
-				</div> 
-				<button class="button login__submit">
-					<span class="button__text">Log In Now</span>
-					<i class="button__icon fas fa-chevron-right"></i>
-				</button>				
-			</form>
-			<div class="social-login">
-				<h3>log in via</h3>
-				<div class="social-icons">
-					<a href="#" class="social-login__icon fab fa-instagram"></a>
-					<a href="#" class="social-login__icon fab fa-facebook"></a>
-					<a href="#" class="social-login__icon fab fa-twitter"></a>
-				</div>
-			</div>
-		</div>
-		<div class="screen__background">
-			<span class="screen__background__shape screen__background__shape4"></span>
-			<span class="screen__background__shape screen__background__shape3"></span>		
-			<span class="screen__background__shape screen__background__shape2"></span>
-			<span class="screen__background__shape screen__background__shape1"></span>
-		</div>		
-	</div>
-</div> 
-{% endblock  %}
 
+
+     <!-- ======= Log in Section ======= -->
+     <section id="faq" class="faq">
+		<div class="container">
+
+		  <section id="faq" class="faq">
+			<div class="container">
+
+			  <div class="section-title">
+				<h2> Log in </h2>
+				{% comment %} <h3>Feel free to<span> join us </span></h3> {% endcomment %}
+			  </div>
+
+			  <div class="container">
+			   <div class="row justify-content-center">
+			   <div class="col-md-6">
+				<div class="card">
+				  <h2 class="card-title text-center">Log in</h2>
+				   <div class="card-body py-md-4">
+					<form _lpchecked="1" method = "post" action = "{% url 'accounts:login' %}">
+					   {% csrf_token %}
+					   <div class="form-group">
+						                {{form.as_p}}
+		   <!--<input type="text" class="form-control" name = "email_or_username" id="name" placeholder="Email/UserName">-->
+					<!-- </div>-->
+				<!--<div class="form-group">-->
+				<!--		  <input type="email" class="form-control" name = "" id="email" placeholder="Email">-->
+				<!--						 </div>-->
+
+			 <!--  <div class="form-group">-->
+				<!--  <input type="password" name = "password" class="form-control" id="password" placeholder="Password">-->
+				<!--</div>-->
+				<!--<div class="form-group">-->
+				<!--   <input type="password" name = "password2" class="form-control" id="confirm-password" placeholder="confirm password">-->
+				<!--</div> -->
+				<!--<div class="d-flex flex-row align-items-center justify-content-between">-->
+				   <a href="{% url 'password_reset' %}">Forget password</a>
+											 <button class="btn btn-primary">Log in</button>
+					   </div>
+					   {% include 'partials/messages.html' %}
+					</form>
+				  </div>
+			   </div>
+			 </div>
+			 </div>
+			 </div>
+			</div>
+		  </section>
+
+		</div>
+	  </section><!-- End Log in Section -->
+
+{% endblock  %}

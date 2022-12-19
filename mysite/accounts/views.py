@@ -38,6 +38,8 @@ def Login_View(request):
 
                 password = cd.get("password")
 
+                print(username, password)
+
                 user = authenticate(username=username,
                                     password=password)
 

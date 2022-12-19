@@ -41,8 +41,8 @@ class signupform(forms.ModelForm):
 
 class LoginUserForm(forms.Form):
 
-    email_or_username = forms.CharField(label='email/username', error_messages={
-        'required': 'this field could not be empty'},)
+    email_or_username = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "enter username or email"}), label="username/email", error_messages={
+        'required': 'this field could not be empty'})
 
-    password = forms.CharField(label='password', error_messages={
-                               'required': 'this field could not be empty'}, widget=forms.PasswordInput())
+    password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "enter password"}), label="password", error_messages={
+        'required': 'this field could not be empty'})
